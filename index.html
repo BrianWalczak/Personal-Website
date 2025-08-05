@@ -1,0 +1,214 @@
+<!--
+Welcome stranger. Interested in how this website was made? You're in the right place!
+
+This is a simple terminal emulator that I created using xterm.js. I've programmed a few commands that you can use to interact with the terminal in ./commands.js.
+This website also features an interactive UI using whiptail.js (made by me!), which you can configure by using the command 'brian-config'.
+
+To get started, type 'help' to see a list of commands that you can use. Have fun exploring!
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Brian Walczak</title>
+    <link rel="canonical" href="https://brianwalczak.com" />
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+    <meta property="og:title" content="Brian Walczak" />
+	<meta name="description" content="Hej! I'm Brian, a high school student and full-stack developer with a strong focus on back-end development. I'm proficient in Node.js and have a solid understanding of Python. I've been programming for over 5 years, and I love tinkering with electronics, especially Arduino." />
+	<meta property="og:description" content="Hej! I'm Brian, a high school student and full-stack developer with a strong focus on back-end development. I'm proficient in Node.js and have a solid understanding of Python. I've been programming for over 5 years, and I love tinkering with electronics, especially Arduino." />
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="https://brianwalczak.com" />
+	<meta property="og:site_name" content="Brian Walczak" />
+    <meta property="og:image" content="https://brianwalczak.com/logo.svg">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xterm/css/xterm.css" />
+    <link rel="stylesheet" href="https://unpkg.com/whiptail-js/dist/whiptail.css" />
+    <script src="https://cdn.jsdelivr.net/npm/xterm/lib/xterm.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xterm-addon-fit/lib/xterm-addon-fit.js"></script>
+    <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://unpkg.com/whiptail-js/dist/whiptail.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            overflow: hidden;
+            padding-left: 5px;
+        }
+
+        #whiptail {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            margin: 0px;
+            background: #140eaa;
+            display: none;
+            
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #terminal {
+            width: 100%;
+            height: 100%;
+        }
+
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        .xterm-underline-5 {
+            text-decoration: underline !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="terminal"></div>
+    <div id="whiptail"></div>
+    <script src="commands.js" type="text/javascript"></script>
+    <script src="cookies.js" type="text/javascript"></script>
+    <script src="interactive.js" type="text/javascript"></script>
+    <script>
+        const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+        async function autoExecute(command, delay = 50, enterDelay = 200) {
+            disableKeys = true;
+                        
+            for (let i = 0; i < command.length; i++) {
+                await sleep(delay); // 50ms per char
+                term.write(command[i]);
+                line += command[i];
+            }
+            
+            await sleep(enterDelay);
+            await handleEvent(command);
+            
+            term.newLine();
+            term.write(`${window.activeUser}:~$ `);
+            line = `${window.activeUser}:~$ `;
+
+            disableKeys = false;
+        }
+
+        function getDateTime() {
+            const lastDate = getCookie("lastReboot").length > 0 ? new Date(getCookie("lastReboot")) : new Date();
+            const formattedDate = lastDate.toLocaleString("en-US", {
+                weekday: "short",
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+            }).replaceAll(",", "");
+
+            setCookie("lastReboot", new Date());
+            return `\x1b[34mLast login: ${formattedDate} on ttys000\x1b[0m`;
+        }
+
+        async function startUp() {
+            term.newLine();
+            term.write("GNU bash, version 5.2.15(1)-release (x86_64-pc-linux-gnu)");
+            await sleep(1000);
+            term.newLine(2);
+            term.write('The programs included with the Debian GNU/Linux system are free software;');
+            term.newLine();
+            term.write('the exact distribution terms for each program are described in the');
+            term.newLine();
+            term.write('individual files in /usr/share/doc/*/copyright.');
+            term.newLine(2);
+            term.write('Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent');
+            term.newLine();
+            term.write('permitted by applicable law.');
+            await sleep(500);
+            term.newLine();
+            term.write(getDateTime());
+            await sleep(500);
+            term.newLine(3);
+            term.write('Please wait, logging in as guest...');
+            await sleep(3000);
+            term.newLine();
+            term.write("Welcome to the terminal! New around here and want to learn about me? Type 'help' to get started.");
+            term.newLine();
+            term.write("Prefer a simplified profile page? You can visit my other website \x1b]8;;https://m.brianwalczak.com\x1b\\here\x1b]8;;\x1b\\.");
+            term.newLine();
+            term.write(`${window.activeUser}:~$ `);
+            
+            await autoExecute('brian-config');
+        };
+    </script>
+    <script>
+        const term = new Terminal({
+            cursorBlink: "block"
+        });
+        const fitAddon = new FitAddon.FitAddon();
+        window.activeUser = "guest@localhost";
+        let disableKeys = true; // Flag to disable user input during auto-execution
+
+        var line = `${window.activeUser}:~$ `;
+        term.loadAddon(fitAddon);
+        term.open(document.getElementById('terminal'));
+        fitAddon.fit();
+
+        term.newLine = (amt = 1) => {
+            let string = '';
+            for (let i = 0; i < amt; i++) {
+                string += "\r\n";
+            }
+
+            return term.write(string);
+        }
+        
+        term.onKey(async (data) => {
+            if (disableKeys) return;
+
+            const formattedLine = line.substring(line.indexOf(' ') + 1);
+
+            // Ignore arrow keys
+            if ([37, 38, 39, 40].includes(data.domEvent.keyCode)) {
+                return;
+            }
+
+            // If user clicks enter key
+            if (data.domEvent.keyCode === 13) {
+                await handleEvent(formattedLine);
+                
+                term.newLine();
+                term.write(`${window.activeUser}:~$ `);
+                line = `${window.activeUser}:~$ `;
+
+            // If user clicks backspace key
+            } else if (data.domEvent.keyCode === 8) {
+                if (formattedLine.length > 0) { // If there is a character to delete
+                    line = line.slice(0, line.length - 1);
+                    
+                    term.write("\b \b"); // Remove a character from the terminal
+                }
+            
+            // User types a character
+            } else {
+                line += data.key;
+                term.write(data.key);
+            }
+        });
+
+        // Fit on resize of window
+        window.addEventListener('resize', () => {
+            fitAddon.fit();
+        });
+
+
+        startUp();
+    </script>
+</body>
+</html>
+
+<!-- Copyright 2025 - Brian Walczak -->

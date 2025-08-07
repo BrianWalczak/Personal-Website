@@ -77,10 +77,11 @@ To get started, type 'help' to see a list of commands that you can use. Have fun
     <script src="cookies.js" type="text/javascript"></script>
     <script src="interactive.js" type="text/javascript"></script>
     <script>
+        window.disableKeys = true; // Flag to disable user input during auto-execution
         const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
         async function autoExecute(command, delay = 50, enterDelay = 200) {
-            disableKeys = true;
+            window.disableKeys = true;
                         
             for (let i = 0; i < command.length; i++) {
                 await sleep(delay); // 50ms per char
@@ -95,7 +96,7 @@ To get started, type 'help' to see a list of commands that you can use. Have fun
             term.write(`${window.activeUser}:~$ `);
             line = `${window.activeUser}:~$ `;
 
-            disableKeys = false;
+            window.disableKeys = false;
         }
 
         function getDateTime() {
@@ -144,14 +145,12 @@ To get started, type 'help' to see a list of commands that you can use. Have fun
             
             await autoExecute('brian-config');
         };
-    </script>
-    <script>
+        
         const term = new Terminal({
             cursorBlink: "block"
         });
         const fitAddon = new FitAddon.FitAddon();
         window.activeUser = "guest@localhost";
-        let disableKeys = true; // Flag to disable user input during auto-execution
 
         var line = `${window.activeUser}:~$ `;
         term.loadAddon(fitAddon);
@@ -168,7 +167,7 @@ To get started, type 'help' to see a list of commands that you can use. Have fun
         }
         
         term.onKey(async (data) => {
-            if (disableKeys) return;
+            if (window.disableKeys) return;
 
             const formattedLine = line.substring(line.indexOf(' ') + 1);
 

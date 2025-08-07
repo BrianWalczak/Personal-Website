@@ -80,106 +80,115 @@ function isExecutable(data) {
     return false;
 }
 
-async function handleFile(data, file) {
-    if(file === 'about') {
-        term.newLine(2);
-        term.write("Hey there. I'm Brian, a high school student and full-stack developer with a strong focus on back-end development.");
-        await sleep(2000);
-        term.newLine();
-        term.write("I'm proficient in Node.js and have a solid understanding of Python.");
-        await sleep(2000);
-        term.newLine();
-        term.write("I love tinkering with electronics, especially Arduino.");
-        await sleep(2000);
-        term.newLine();
-        term.write("I've been programming for over 5 years, and I'm always looking for cool new projects to build!");
-        await sleep(2000);
-        term.newLine();
-        term.write("You can check out my \x1b]8;;https://github.com/BrianWalczak\x1b\\GitHub Profile\x1b]8;;\x1b\\ to view some of my projects.");
-        term.newLine(2);
-        term.write("Tip: you can run the `skills.sh` script to see more of my skills.");
-        return;
-    }
+async function handleFile(file) {
+    window.disableKeys = true;
 
-    if(file === 'skills') {
-        term.newLine(2);
-        term.write("Hey there, I see you're interested in my skills.");
-        await sleep(500);
-        term.write(".");
-        await sleep(500);
-        term.write(".");
-        await sleep(2000);
-        term.write(' Well, here are a few:');
-        await sleep(1000);
-        term.newLine();
-        term.write('- Node.js');
-        term.newLine();
-        term.write('- Python');
-        term.newLine();
-        term.write('- HTML, CSS, and JS');
-        term.newLine();
-        term.write('- Discord.js (check out my bots!)');
-        term.newLine();
-        term.write('- Arduino/C++');
-        term.newLine();
-        term.write('- Roblox Studio');
-        term.newLine(2);
-        await sleep(3000);
-        term.write("Some software I'm proficient in includes:");
-        await sleep(1000);
-        term.newLine();
-        term.write('- Visual Studio Code');
-        term.newLine();
-        term.write('- KiCad 8.0');
-        term.newLine();
-        term.write('- Blender');
-        term.newLine();
-        term.write('- Adobe Illustrator');
-        term.newLine();
-        term.write('- Adobe Photoshop');
-        term.newLine();
-        term.write('- Adobe Premiere Pro');
-        await sleep(3000);
-        term.newLine();
-        term.write("... that's about all I can think of right now.");
-        term.newLine(2);
-        term.write("Tip: You can run the `contact.sh` script to reach out to me.");
-        return;
-    }
-
-    if(file === 'contact') {
-        term.newLine(2);
-        term.write('Hey there! Thanks for your interest in contacting me.');
-        await sleep(2000);
-        term.newLine();
-        term.write("For business inquiries, including questions about my work, you can contact me via email at brian@brianwalczak.com and I'll respond as soon as I can.");
-        await sleep(1000);
-        term.newLine();
-        term.write("For any other inquiries, feel free to reach out to me on Discord at @briannw.");
-        await sleep(1000);
-        term.newLine(2);
-        term.write("Tip: Interested in supporting me? Run the `tip.sh` script to learn how to leave a tip :)");
-    }
-
-    if(file === 'tip') {
-        try {
-            const width = 800;
-            const height = 600;
-
-            const left = window.screen.width - width;
-            const top = 0;
-
+    switch(file) {
+        case 'about':
             term.newLine(2);
-            term.write('If you\'ve found my projects helpful or just want to support a solo developer, you can leave me a tip on the window that just opened :)');
-            window.open('https://ko-fi.com/brianwalczak', '_blank', `width=${width},height=${height},top=${top},left=${left}`);
+            term.write("Hey there. I'm Brian, a high school student and full-stack developer with a strong focus on back-end development.");
+            await sleep(2000);
             term.newLine();
-            term.write("Don't see the window? You can open the page by \x1b]8;;https://ko-fi.com/brianwalczak\x1b\\clicking here\x1b]8;;\x1b\\.");
-            return;
-        } catch(error) {
-            console.log("We couldn't open the tip page. Reason: ", error);
+            term.write("I'm proficient in Node.js and have a solid understanding of Python.");
+            await sleep(2000);
             term.newLine();
-            term.write("Thanks for considering leaving a tip! You can leave a tip at https://ko-fi.com/brianwalczak :)");
-        }
+            term.write("I love tinkering with electronics, especially Arduino.");
+            await sleep(2000);
+            term.newLine();
+            term.write("I've been programming for over 5 years, and I'm always looking for cool new projects to build!");
+            await sleep(2000);
+            term.newLine();
+            term.write("You can check out my \x1b]8;;https://github.com/BrianWalczak\x1b\\GitHub Profile\x1b]8;;\x1b\\ to view some of my projects.");
+            term.newLine(2);
+            term.write("Tip: you can run the `skills.sh` script to see more of my skills.");
+
+            window.disableKeys = false;
+            break;
+        case 'skills':
+            term.newLine(2);
+            term.write("Hey there, I see you're interested in my skills.");
+            await sleep(500);
+            term.write(".");
+            await sleep(500);
+            term.write(".");
+            await sleep(2000);
+            term.write(' Well, here are a few:');
+            await sleep(1000);
+            term.newLine();
+            term.write('- Node.js');
+            term.newLine();
+            term.write('- Python');
+            term.newLine();
+            term.write('- HTML, CSS, and JS');
+            term.newLine();
+            term.write('- Discord.js (check out my bots!)');
+            term.newLine();
+            term.write('- Arduino/C++');
+            term.newLine();
+            term.write('- Roblox Studio');
+            term.newLine(2);
+            await sleep(3000);
+            term.write("Some software I'm proficient in includes:");
+            await sleep(1000);
+            term.newLine();
+            term.write('- Visual Studio Code');
+            term.newLine();
+            term.write('- KiCad 8.0');
+            term.newLine();
+            term.write('- Blender');
+            term.newLine();
+            term.write('- Adobe Illustrator');
+            term.newLine();
+            term.write('- Adobe Photoshop');
+            term.newLine();
+            term.write('- Adobe Premiere Pro');
+            await sleep(3000);
+            term.newLine();
+            term.write("... that's about all I can think of right now.");
+            term.newLine(2);
+            term.write("Tip: You can run the `contact.sh` script to reach out to me.");
+
+            window.disableKeys = false;
+            break;
+        case 'contact':
+            term.newLine(2);
+            term.write('Hey there! Thanks for your interest in contacting me.');
+            await sleep(2000);
+            term.newLine();
+            term.write("For business inquiries, including questions about my work, you can contact me via email at brian@brianwalczak.com and I'll respond as soon as I can.");
+            await sleep(1000);
+            term.newLine();
+            term.write("For any other inquiries, feel free to reach out to me on Discord at @briannw.");
+            await sleep(1000);
+            term.newLine(2);
+            term.write("Tip: Interested in supporting me? Run the `tip.sh` script to learn how to leave a tip :)");
+
+            window.disableKeys = false;
+            break;
+        case 'tip':
+            try {
+                const width = 800;
+                const height = 600;
+
+                const left = window.screen.width - width;
+                const top = 0;
+
+                term.newLine(2);
+                term.write('If you\'ve found my projects helpful or just want to support a solo developer, you can leave me a tip on the window that just opened :)');
+                window.open('https://ko-fi.com/brianwalczak', '_blank', `width=${width},height=${height},top=${top},left=${left}`);
+                term.newLine();
+                term.write("Don't see the window? You can open the page by \x1b]8;;https://ko-fi.com/brianwalczak\x1b\\clicking here\x1b]8;;\x1b\\.");
+                return;
+            } catch(error) {
+                console.log("We couldn't open the tip page. Reason: ", error);
+                term.newLine();
+                term.write("Thanks for considering leaving a tip! You can leave a tip at https://ko-fi.com/brianwalczak :)");
+            }
+
+            window.disableKeys = false;
+            break;
+        default:
+            window.disableKeys = false;
     }
 }
 
@@ -274,7 +283,7 @@ async function handleEvent(data) {
     }
 
     if(file) {
-        await handleFile(data, file);
+        await handleFile(file);
         return;
     }
 
